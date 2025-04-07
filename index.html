@@ -4,7 +4,7 @@
     <title>three.js webgl - GLTFloader</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="./src/main.css">
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/css/main.css">
 </head>
 
 <body>
@@ -47,9 +47,10 @@
 
             scene = new THREE.Scene();
 
+            // Load HDR texture from a cloud-hosted source
             new RGBELoader()
-                .setPath( './src/assets/textures/' )
-                .load( 'royal_esplanade_1k.hdr', function ( texture ) {
+                .setPath('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/textures/equirectangular/')
+                .load('royal_esplanade_1k.hdr', function ( texture ) {
 
                     texture.mapping = THREE.EquirectangularReflectionMapping;
 
@@ -58,15 +59,13 @@
 
                     render();
 
-                    // model
-
-                    const loader = new GLTFLoader().setPath( './src/assets/models/' );
-                    loader.load( 'DamagedHelmet.gltf', async function ( gltf ) {
+                    // Load GLTF model from a cloud-hosted source
+                    const loader = new GLTFLoader().setPath('https://cdn.jsdelivr.net/gh/mrdoob/three.js@master/examples/models/gltf/DamagedHelmet/');
+                    loader.load('DamagedHelmet.gltf', async function ( gltf ) {
 
                         const model = gltf.scene;
 
-                        // wait until the model can be added to the scene without blocking due to shader compilation
-
+                        // Wait until the model can be added to the scene without blocking due to shader compilation
                         await renderer.compileAsync( model, camera, scene );
 
                         scene.add( model );
@@ -85,7 +84,7 @@
             container.appendChild( renderer.domElement );
 
             const controls = new OrbitControls( camera, renderer.domElement );
-            controls.addEventListener( 'change', render ); // use if there is no animation loop
+            controls.addEventListener( 'change', render ); // Use if there is no animation loop
             controls.minDistance = 2;
             controls.maxDistance = 10;
             controls.target.set( 0, 0, - 0.2 );
